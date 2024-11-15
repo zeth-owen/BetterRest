@@ -12,7 +12,7 @@ struct ContentView: View {
     
     @State private var wakeUp = defaultWakeTime
     @State private var sleepAmount = 8.0
-    @State private var coffeeAmount = 1
+    @State private var coffeeAmount = 0
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showAlert = false
@@ -33,7 +33,7 @@ struct ContentView: View {
                         .font(.headline)
                     
                     DatePicker("Please enter a time", selection: $wakeUp, displayedComponents:
-                        .hourAndMinute)
+                            .hourAndMinute)
                         .labelsHidden()
                 }
              
@@ -44,11 +44,18 @@ struct ContentView: View {
                     Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.25)
                 }
             
-                VStack {
+                VStack(alignment: .leading, spacing: 10) {
                     Text("Daily coffe intake")
                         .font(.headline)
                     
-                    Stepper("^[\(coffeeAmount) cup](inflect: true)", value: $coffeeAmount, in: 0...20, step: 1)
+                    Picker("Daily coffee intake", selection: $coffeeAmount) {
+                        ForEach(0...20, id: \.self) { number in
+                            Text("\(number) \(number == 1 ? "cups" : "cup")")
+                            
+                        }
+                    }
+                    
+                  
                 }
             }
             .navigationTitle("Better Rest")
